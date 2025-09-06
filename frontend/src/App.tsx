@@ -1,9 +1,13 @@
-import {CaptureUpdateAction, Excalidraw } from '@excalidraw/excalidraw'
+import {CaptureUpdateAction, Excalidraw, exportToSvg } from '@excalidraw/excalidraw'
 import "@excalidraw/excalidraw/index.css";
 import { useEffect, useState } from 'react';
 import ShinyButton from './comp/Button';
 import newElements from './scene/newElement';
 import axios from 'axios';
+import {
+  sceneCoordsToViewportCoords,
+  viewportCoordsToSceneCoords,
+} from "@excalidraw/excalidraw"; 
 
 const extractPromptTexts = (elements: any[]): string[] => {
   return elements
@@ -12,6 +16,7 @@ const extractPromptTexts = (elements: any[]): string[] => {
     .filter(text => text.startsWith("{") && text.endsWith("}"))
     .map(text => text.slice(1, -1)); // remove the { and }
 };
+
 
 export default function App() 
 {
@@ -59,92 +64,6 @@ export default function App()
     // const appState = excalidrawAPI.getAppState();
     // localStorage.setItem("excalidraw-scene", JSON.stringify({existingElements,appState}));
   };
-
-//   const insertOrUpdateCanvasButton = (promptEl) => {
-//   const id = runButtonIdRef.current || `run-btn-${promptEl.id}`; // link to prompt
-
-//   const existingElements = excalidrawAPI.getSceneElements();
-//   const existingRect = existingElements.find((el) => el.id === `${id}-rect`);
-//   const existingText = existingElements.find((el) => el.id === `${id}-text`);
-
-//   const newX = promptEl.x + promptEl.width + 20;
-//   const newY = promptEl.y;
-
-//   const rect = {
-//     id: `${id}-rect`,
-//     type: "rectangle",
-//     x: newX,
-//     y: newY,
-//     width: 80,
-//     height: 40,
-//     backgroundColor: "#a78bfa",
-//     strokeColor: "#000",
-//     fillStyle: "solid",
-//     ...getSharedProps(),
-//   };
-//   const text = {
-//   id: `${id}-text`,
-//   type: "text",
-//   x: newX + 20,
-//   y: newY + 10,
-//   width: 0,
-//   height: 0,
-//   angle: 0,
-//   strokeColor: "#000000",
-//   backgroundColor: "transparent",
-//   fillStyle: "solid",
-//   strokeWidth: 1,
-//   roughness: 0,
-//   opacity: 100,
-//   groupIds: [id],
-//   boundElements: [],
-//   seed: Math.floor(Math.random() * 100000),
-//   version: 1,
-//   versionNonce: Math.floor(Math.random() * 100000),
-
-//   // ✅ Required text properties
-//   text: "Run",
-//   fontSize: 20,
-//   fontFamily: 1,
-//   textAlign: "center",
-//   verticalAlign: "middle",
-//   baseline: 18,
-
-//   // ✅ These help prevent crashes or locked states
-//   locked: false,
-//   isDeleted: false,
-//   };
-
-
-//   if (existingRect || existingText) {
-//     // Update scene with modified existing
-//     const updatedElements = existingElements.map((el) => {
-//       if (el.id === `${id}-rect`) return { ...rect, version: el.version + 1 };
-//       if (el.id === `${id}-text`) return { ...text, version: el.version + 1 };
-//       return el;
-//     });
-//     excalidrawAPI.updateScene({ elements: updatedElements });
-//   } else {
-//     // Insert new
-//     excalidrawAPI.updateScene({
-//       elements: [...existingElements, rect, text],
-//     });
-//     runButtonIdRef.current = id;
-//   }
-// };
-
-// const getSharedProps = () => ({
-//   angle: 0,
-//   fillStyle: "solid",
-//   strokeWidth: 1,
-//   roughness: 0,
-//   opacity: 100,
-//   seed: Math.floor(Math.random() * 100000),
-//   version: 1,
-//   versionNonce: Math.floor(Math.random() * 100000),
-//   groupIds: [],
-//   boundElements: [],
-// });
 
   const handlePromptScan = () => {
     const elements = excalidrawAPI.getSceneElements();

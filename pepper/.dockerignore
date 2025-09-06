@@ -1,0 +1,30 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Build output
+dist
+build
+
+# Env files
+.env
+.env.*
+!env.example
+
+# OS / Editor crap
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Git / IDE
+.git
+.gitignore
+.idea
+.vscode
+
+# Docker itself
+Dockerfile*
+docker-compose*.yml
