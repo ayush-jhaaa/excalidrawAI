@@ -1,7 +1,6 @@
 import {
   CaptureUpdateAction,
   Excalidraw,
-  exportToSvg,
   sceneCoordsToViewportCoords,
   viewportCoordsToSceneCoords,
 } from "@excalidraw/excalidraw";
@@ -56,7 +55,9 @@ export default function App() {
     console.log(`x = ${promptPos?.x} y = ${promptPos?.y} and ${hasPrompt}`);
 
     // save locally
-    // const existingElements = excalidrawAPI.getSceneElements();
+    const existingElements = excalidrawAPI.getSceneElements();
+    console.log((existingElements));
+    
     // const appState = excalidrawAPI.getAppState();
     // localStorage.setItem("excalidraw-scene", JSON.stringify({existingElements,appState}));
   };
@@ -173,7 +174,6 @@ export default function App() {
       return { x: 0, y: 0 };
     }
   }
-
   // Render grid SVG (kept simple and bounded to viewport)
   function renderGridSVG() {
     const st = overlayAppState ?? excalidrawAPI?.getAppState?.();
@@ -286,10 +286,6 @@ export default function App() {
     );
   }
 
-  // ---------------------------
-  // Render: I only added containerRef and the overlay SVG here.
-  // Your Excalidraw props and onChange logic are untouched.
-  // ---------------------------
   return (
     <div ref={containerRef} className="h-screen w-screen" style={{ position: "relative" }}>
       <Excalidraw
@@ -303,7 +299,6 @@ export default function App() {
         }}
         theme="dark"
         onChange={() => {
-          // your original handlers - unchanged
           handlePromptScan();
           handleChange();
         }}
